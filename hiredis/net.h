@@ -35,11 +35,6 @@
 
 #include "hiredis.h"
 
-#ifdef WIN32
-#pragma comment(lib, "ws2_32.lib")
-#else
-#endif
-
 #if defined(__sun)
 #define AF_LOCAL AF_UNIX
 #endif

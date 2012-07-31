@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,20 +6,18 @@
 #include "../hiredis/hiredis.h"
 
 #pragma warning(disable: 4996)
-#pragma comment(lib, "ws2_32.lib")
 
-int main(void) 
+int main(int nargs, char** args) 
 {
     unsigned int j;
     redisContext *c;
     redisReply *reply;
+	char *ip = "192.168.66.131";
 
     struct timeval timeout = { 1, 500000 }; // 1.5 seconds
 
-	WSADATA wsaData;
-	WSAStartup(MAKEWORD( 2, 2 ), &wsaData);
-
-    c = redisConnectWithTimeout((char*)"192.168.66.131", 6379, timeout);
+	if ( nargs>1 ) ip = args[1];
+    c = redisConnectWithTimeout(ip, 6379, timeout);
     if (c->err) {
         printf("Connection error: %s\n", c->errstr);
         exit(1);

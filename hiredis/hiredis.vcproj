@@ -60,6 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkDLL="true"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -132,7 +133,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				LinkDLL="true"
+				LinkIncremental="0"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -188,6 +190,10 @@
 			</File>
 			<File
 				RelativePath=".\sds.c"
+				>
+			</File>
+			<File
+				RelativePath=".\dll.c"
 				>
 			</File>
 		</Filter>

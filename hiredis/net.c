@@ -58,7 +58,7 @@
 
 #ifdef WIN32
 #pragma warning(disable: 4996)
-#else
+#include "win32err.h"
 #endif
 
 /* Defined in hiredis.c */
@@ -71,7 +71,7 @@ static void __redisSetErrorFromErrno(redisContext *c, int type, const char *pref
     if (prefix != NULL)
         len = _snprintf(buf,sizeof(buf),"%s: ",prefix);
 #ifdef WIN32
-    strerror_s(buf+len,sizeof(buf)-len,errno);
+    strcpy_s(buf+len,sizeof(buf)-len,redis_strerror(errno));
 #else
 	strerror_r(errno,buf+len,sizeof(buf)-len);
 #endif
@@ -242,7 +242,12 @@ int redisCheckSocketError(redisContext *c, int fd) {
     return REDIS_OK;
 }
 
+#if WIN32
+int redisContextSetTimeout(redisContext *c, struct timeval tvs) {
+	DWORD tv = (tvs.tv_sec*1000)+(tvs.tv_usec/1000);
+#else
 int redisContextSetTimeout(redisContext *c, struct timeval tv) {
+#endif
     if (setsockopt(c->fd,SOL_SOCKET,SO_RCVTIMEO,(char*)&tv,sizeof(tv)) == -1) {
         __redisSetErrorFromErrno(c,REDIS_ERR_IO,"setsockopt(SO_RCVTIMEO)");
         return REDIS_ERR;
